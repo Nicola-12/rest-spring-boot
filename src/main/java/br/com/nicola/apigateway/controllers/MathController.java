@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author ne
  */
 @RestController
+@RequestMapping( value = "/math" )
 public class MathController
 {
 	@RequestMapping( value = "/sum/{numberOne}/{numberTwo}", method = RequestMethod.GET )
