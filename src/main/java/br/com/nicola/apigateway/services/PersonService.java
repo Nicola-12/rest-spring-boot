@@ -2,13 +2,11 @@ package br.com.nicola.apigateway.services;
 
 
 import br.com.nicola.apigateway.data.vo.v1.PersonVO;
-import br.com.nicola.apigateway.data.vo.v2.PersonVOV2;
 import br.com.nicola.apigateway.exceptions.ResourceNotFoundException;
 import br.com.nicola.apigateway.mapper.DozerMapper;
-import br.com.nicola.apigateway.mapper.custom.PersonMapper;
 import br.com.nicola.apigateway.models.Person;
 import br.com.nicola.apigateway.repositories.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,15 +16,11 @@ import java.util.logging.Logger;
  * @author ne
  */
 @Service
+@AllArgsConstructor
 public class PersonService
 {
 	private final Logger logger = Logger.getLogger( PersonService.class.getName() );
-
-	@Autowired
-	PersonRepository personRepository;
-
-	@Autowired
-	PersonMapper personMapper;
+	private final PersonRepository personRepository;
 
 	/**
 	 * findAll
@@ -69,21 +63,6 @@ public class PersonService
 		Person person = DozerMapper.parseObject( personVO, Person.class );
 
 		return DozerMapper.parseObject( personRepository.save( person ), PersonVO.class );
-	}
-
-	/**
-	 * createV2
-	 *
-	 * @param personVO PersonVOV2
-	 * @return PersonVOV2
-	 */
-	public PersonVOV2 createV2( PersonVOV2 personVO )
-	{
-		logger.info( "Creating one person with V2!" );
-
-		Person person = personMapper.convertVOToEntity( personVO );
-
-		return personMapper.convertEntityToVO( personRepository.save( person ) );
 	}
 
 	/**

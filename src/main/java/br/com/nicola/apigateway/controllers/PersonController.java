@@ -1,9 +1,8 @@
 package br.com.nicola.apigateway.controllers;
 
 import br.com.nicola.apigateway.data.vo.v1.PersonVO;
-import br.com.nicola.apigateway.data.vo.v2.PersonVOV2;
 import br.com.nicola.apigateway.services.PersonService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,11 +20,11 @@ import java.util.List;
  * @author ne
  */
 @RestController
-@RequestMapping( value = "/person" )
+@AllArgsConstructor
+@RequestMapping( value = "api/person/v1" )
 public class PersonController
 {
-	@Autowired
-	private PersonService service;
+	private final PersonService service;
 
 	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE )
 	public List<PersonVO> findAll()
@@ -45,14 +44,6 @@ public class PersonController
 	public PersonVO create( @RequestBody PersonVO personVO )
 	{
 		return service.create( personVO );
-	}
-
-	@PostMapping( value = "/v2",
-				  consumes = MediaType.APPLICATION_JSON_VALUE,
-	              produces = MediaType.APPLICATION_JSON_VALUE )
-	public PersonVOV2 createV2( @RequestBody PersonVOV2 personVO )
-	{
-		return service.createV2( personVO );
 	}
 
 	@PutMapping( consumes = MediaType.APPLICATION_JSON_VALUE,

@@ -1,5 +1,10 @@
 package br.com.nicola.apigateway.data.vo.v1;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -7,15 +12,22 @@ import java.util.Objects;
 /**
  * @author ne
  */
+@Getter
+@Setter
+@JsonPropertyOrder( { "id", "first_name", "last_name", "address", "gender" } )
 public class PersonVO
-		implements
+	implements
 		Serializable
 {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
+
+	@JsonProperty( "first_name" )
 	private String firstName;
+
+	@JsonProperty( "last_name" )
 	private String lastName;
 	private String address;
 	private String gender;
@@ -25,106 +37,6 @@ public class PersonVO
 	 */
 	public PersonVO()
 	{
-	}
-
-	/**
-	 * getId
-	 *
-	 * @return Long
-	 */
-	public Long getId()
-	{
-		return id;
-	}
-
-	/**
-	 * setId
-	 *
-	 * @param id Long
-	 */
-	public void setId( Long id )
-	{
-		this.id = id;
-	}
-
-	/**
-	 * getFirstName
-	 *
-	 * @return String
-	 */
-	public String getFirstName()
-	{
-		return firstName;
-	}
-
-	/**
-	 * setFirstName
-	 *
-	 * @param firstName String
-	 */
-	public void setFirstName( String firstName )
-	{
-		this.firstName = firstName;
-	}
-
-	/**
-	 * getLastName
-	 *
-	 * @return String
-	 */
-	public String getLastName()
-	{
-		return lastName;
-	}
-
-	/**
-	 * setLastName
-	 *
-	 * @param lastName String
-	 */
-	public void setLastName( String lastName )
-	{
-		this.lastName = lastName;
-	}
-
-	/**
-	 * getAddress
-	 *
-	 * @return String
-	 */
-	public String getAddress()
-	{
-		return address;
-	}
-
-	/**
-	 * setAddress
-	 *
-	 * @param address String
-	 */
-	public void setAddress( String address )
-	{
-		this.address = address;
-	}
-
-	/**
-	 * getGender
-	 *
-	 * @return String
-	 */
-	public String getGender()
-	{
-		return gender;
-	}
-
-	/**
-	 * setGender
-	 *
-	 * @param gender String
-	 */
-	public void setGender( String gender )
-	{
-		this.gender = gender;
 	}
 
 	@Override
