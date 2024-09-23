@@ -1,7 +1,7 @@
-package br.com.nicola.apigateway.handlers;
+package br.com.nicola.apigateway.exceptions.handlers;
 
 import br.com.nicola.apigateway.exceptions.ExceptionResponse;
-import br.com.nicola.apigateway.exceptions.UnsupportedMathOperationException;
+import br.com.nicola.apigateway.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,18 +22,18 @@ public class CustomizedExceptionHandler
 {
 
 	@ExceptionHandler( Exception.class )
-	public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request )
+	public final ResponseEntity<ExceptionResponse> handleAllExceptions( Exception ex, WebRequest request )
 	{
 		ExceptionResponse exceptionResponse = new ExceptionResponse( ex.getMessage(), request.getDescription( false ), java.time.LocalDate.now() );
 
 		return new ResponseEntity<>( exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR );
 	}
 
-	@ExceptionHandler( UnsupportedMathOperationException.class )
-	public final ResponseEntity<ExceptionResponse> handleBadRequestException(Exception ex, WebRequest request )
+	@ExceptionHandler( ResourceNotFoundException.class )
+	public final ResponseEntity<ExceptionResponse> handleNotFoundExceptions( Exception ex, WebRequest request )
 	{
 		ExceptionResponse exceptionResponse = new ExceptionResponse( ex.getMessage(), request.getDescription( false ), java.time.LocalDate.now() );
 
-		return new ResponseEntity<>( exceptionResponse, HttpStatus.BAD_REQUEST );
+		return new ResponseEntity<>( exceptionResponse, HttpStatus.NOT_FOUND );
 	}
 }

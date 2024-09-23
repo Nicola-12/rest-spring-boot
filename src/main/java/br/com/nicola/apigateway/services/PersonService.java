@@ -1,117 +1,122 @@
 package br.com.nicola.apigateway.services;
 
 
+import br.com.nicola.apigateway.data.vo.v1.PersonVO;
+import br.com.nicola.apigateway.data.vo.v2.PersonVOV2;
+import br.com.nicola.apigateway.exceptions.ResourceNotFoundException;
+import br.com.nicola.apigateway.mapper.DozerMapper;
+import br.com.nicola.apigateway.mapper.custom.PersonMapper;
 import br.com.nicola.apigateway.models.Person;
+import br.com.nicola.apigateway.repositories.PersonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 /**
- *
  * @author ne
  */
 @Service
 public class PersonService
 {
-	private final AtomicLong counter = new AtomicLong();
 	private final Logger logger = Logger.getLogger( PersonService.class.getName() );
+
+	@Autowired
+	PersonRepository personRepository;
+
+	@Autowired
+	PersonMapper personMapper;
 
 	/**
 	 * findAll
 	 *
 	 * @return List<Person>
 	 */
-	public List<Person> findAll()
+	public List<PersonVO> findAll()
 	{
 		logger.info( "Finding all people!" );
 
-		List<Person> persons = new ArrayList<>();
-
-		for ( int i = 0; i < 8; i++ )
-		{
-			persons.add( mockPerson( i ) );
-		}
-
-		return persons;
+		return DozerMapper.parseListObjects( personRepository.findAll(), PersonVO.class );
 	}
-
 
 
 	/**
 	 * findById
 	 *
-	 * @param id String
+	 * @param id Long
 	 * @return Person
 	 */
-	public Person findById( String id )
+	public PersonVO findById( Long id )
 	{
 		logger.info( "Finding one person!" );
 
-		Person person = new Person();
-		person.setId( counter.incrementAndGet() );
-		person.setFirstName( "Nicolas" );
-		person.setLastName( "Endrizzi" );
-		person.setAddress( "Lajeado, Rio Grande do Sul" );
-		person.setGender( "Male" );
+		Person person = personRepository.findById( id ).orElseThrow( () -> new ResourceNotFoundException( "No records found for this ID!" ) );
 
-		return person;
+		return DozerMapper.parseObject( person, PersonVO.class );
 	}
 
 	/**
 	 * create
 	 *
-	 * @param person Person
+	 * @param personVO Person
 	 * @return Person
 	 */
-	public Person create( Person person )
+	public PersonVO create( PersonVO personVO )
 	{
 		logger.info( "Creating one person" );
 
-		return person;
+		Person person = DozerMapper.parseObject( personVO, Person.class );
+
+		return DozerMapper.parseObject( personRepository.save( person ), PersonVO.class );
+	}
+
+	/**
+	 * createV2
+	 *
+	 * @param personVO PersonVOV2
+	 * @return PersonVOV2
+	 */
+	public PersonVOV2 createV2( PersonVOV2 personVO )
+	{
+		logger.info( "Creating one person with V2!" );
+
+		Person person = personMapper.convertVOToEntity( personVO );
+
+		return personMapper.convertEntityToVO( personRepository.save( person ) );
 	}
 
 	/**
 	 * update
 	 *
-	 * @param person Person
+	 * @param personVO Person
 	 * @return Person
 	 */
-	public Person update( Person person )
+	public PersonVO update( PersonVO personVO )
 	{
 		logger.info( "Updating one person" );
 
-		return person;
+		Person entity = personRepository.findById( personVO.getId() ).orElseThrow( () -> new ResourceNotFoundException( "No records found for this ID!" ) );
+
+		entity.setFirstName( personVO.getFirstName() );
+		entity.setLastName( personVO.getLastName() );
+		entity.setAddress( personVO.getAddress() );
+		entity.setGender( personVO.getGender() );
+
+		return DozerMapper.parseObject( personRepository.save( entity ), PersonVO.class );
 	}
 
 	/**
 	 * delete
 	 *
-	 * @param id String
+	 * @param id Long
 	 */
-	public void delete( String id )
+	public void delete( Long id )
 	{
 		logger.info( "Deleting one person" );
-	}
 
+		Person entity = personRepository.findById( id ).orElseThrow( () -> new ResourceNotFoundException( "No records found for this ID!" ) );
 
-	/**
-	 * mockPerson
-	 *
-	 * @param index int
-	 * @return Person
-	 */
-	private Person mockPerson( int index )
-	{
-		Person person = new Person();
-		person.setId( counter.incrementAndGet() );
-		person.setFirstName( "First Name " + index );
-		person.setLastName( "Last Name " + index );
-		person.setAddress( "Address " + index );
-		person.setGender( "Gender " + index );
-
-		return person;
+		personRepository.delete( entity );
 	}
 }

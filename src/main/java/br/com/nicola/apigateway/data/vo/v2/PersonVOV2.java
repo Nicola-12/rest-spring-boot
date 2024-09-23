@@ -1,49 +1,32 @@
-package br.com.nicola.apigateway.models;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+package br.com.nicola.apigateway.data.vo.v2;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- *
  * @author ne
  */
-@Entity
-@Table( name = "person")
-public class Person
-		implements
+public class PersonVOV2
+	implements
 		Serializable
 {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Long id;
-
-	@Column( name = "first_name", nullable = false, length = 180 )
 	private String firstName;
-
-	@Column( name = "last_name", nullable = false, length = 180 )
 	private String lastName;
-
-	@Column( nullable = false, length = 100 )
 	private String address;
-
-	@Column( nullable = false, length = 6 )
 	private String gender;
+
+	private LocalDate birthDay;
 
 	/**
 	 * Person
 	 */
-	public Person()
+	public PersonVOV2()
 	{
 	}
 
@@ -147,6 +130,32 @@ public class Person
 		this.gender = gender;
 	}
 
+	/**
+	 * getBirthDay
+	 *
+	 * @return LocalDate
+	 */
+	public LocalDate getBirthDay()
+	{
+		return birthDay;
+	}
+
+	/**
+	 * setBirthDay
+	 *
+	 * @param birthDay LocalDate
+	 */
+	public void setBirthDay( LocalDate birthDay )
+	{
+		this.birthDay = birthDay;
+	}
+
+	/**
+	 * equals
+	 *
+	 * @param o Object
+	 * @return boolean
+	 */
 	@Override
 	public boolean equals( Object o )
 	{
@@ -158,19 +167,18 @@ public class Person
 		{
 			return false;
 		}
-
-		Person personVO = ( Person ) o;
-
-		return Objects.equals( id, personVO.id ) &&
-				       Objects.equals( firstName, personVO.firstName ) &&
-				       Objects.equals( lastName, personVO.lastName ) &&
-				       Objects.equals( address, personVO.address ) &&
-				       Objects.equals( gender, personVO.gender );
+		PersonVOV2 that = ( PersonVOV2 ) o;
+		return Objects.equals( id, that.id ) && Objects.equals( firstName, that.firstName ) && Objects.equals( lastName, that.lastName ) && Objects.equals( address, that.address ) && Objects.equals( gender, that.gender ) && Objects.equals( birthDay, that.birthDay );
 	}
 
+	/**
+	 * hashCode
+	 *
+	 * @return int
+	 */
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash( id, firstName, lastName, address, gender );
+		return Objects.hash( id, firstName, lastName, address, gender, birthDay );
 	}
 }
