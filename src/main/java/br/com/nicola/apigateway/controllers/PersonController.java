@@ -26,28 +26,28 @@ public class PersonController
 {
 	private final PersonService service;
 
-	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE )
+	@GetMapping( produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE } )
 	public List<PersonVO> findAll()
 	{
 		return service.findAll();
 	}
 
 	@GetMapping( value = "/{id}",
-	             produces = MediaType.APPLICATION_JSON_VALUE )
+	             produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE } )
 	public PersonVO findById( @PathVariable( value = "id" ) Long id )
 	{
 		return service.findById( id );
 	}
 
-	@PostMapping( consumes = MediaType.APPLICATION_JSON_VALUE,
-	              produces = MediaType.APPLICATION_JSON_VALUE )
+	@PostMapping( consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
+	              produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE } )
 	public PersonVO create( @RequestBody PersonVO personVO )
 	{
 		return service.create( personVO );
 	}
 
-	@PutMapping( consumes = MediaType.APPLICATION_JSON_VALUE,
-	             produces = MediaType.APPLICATION_JSON_VALUE )
+	@PutMapping( consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE },
+	             produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE } )
 	public PersonVO update( @RequestBody PersonVO personVO )
 	{
 		return service.update( personVO );
