@@ -31,7 +31,7 @@ public class PersonVOV2
 	}
 
 	/**
-	 * getId
+	 * getKey
 	 *
 	 * @return Long
 	 */
@@ -41,7 +41,7 @@ public class PersonVOV2
 	}
 
 	/**
-	 * setId
+	 * setKey
 	 *
 	 * @param id Long
 	 */

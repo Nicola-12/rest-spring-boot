@@ -2,8 +2,12 @@ package br.com.nicola.apigateway.data.vo.v1;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.github.dozermapper.core.Mapping;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,14 +19,20 @@ import java.util.Objects;
 @Getter
 @Setter
 @JsonPropertyOrder( { "id", "first_name", "last_name", "address", "gender" } )
+@AllArgsConstructor
+@NoArgsConstructor
 public class PersonVO
+	extends
+		RepresentationModel<PersonVO>
 	implements
 		Serializable
 {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
+	@Mapping( "id" )
+	@JsonProperty( "id" )
+	private Long key;
 
 	@JsonProperty( "first_name" )
 	private String firstName;
@@ -31,13 +41,6 @@ public class PersonVO
 	private String lastName;
 	private String address;
 	private String gender;
-
-	/**
-	 * Person
-	 */
-	public PersonVO()
-	{
-	}
 
 	@Override
 	public boolean equals( Object o )
@@ -54,7 +57,7 @@ public class PersonVO
 
 		PersonVO person = ( PersonVO ) o;
 
-		return Objects.equals( id, person.id ) &&
+		return Objects.equals( key, person.key ) &&
 				       Objects.equals( firstName, person.firstName ) &&
 				       Objects.equals( lastName, person.lastName ) &&
 				       Objects.equals( address, person.address ) &&
@@ -64,6 +67,6 @@ public class PersonVO
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash( id, firstName, lastName, address, gender );
+		return Objects.hash( key, firstName, lastName, address, gender );
 	}
 }
